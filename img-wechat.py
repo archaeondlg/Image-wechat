@@ -1,20 +1,22 @@
 #!/usr/bin/python
-#coding:UTF-8
+# coding:UTF-8
 
 from PIL import Image
 
-def fill_image(image, color = 'white'):
+
+def fill_image(image, color='white'):
     width, height = image.size
-    #python中的三目运算
+    # python中的三目运算
     length = width if width > height else height
-    #新生成图片，参数：模式（一般RGB），尺寸，背景色（默认黑）
+    # 新生成图片，参数：模式（一般RGB），尺寸，背景色（默认黑）
     new_image = Image.new(image.mode, (length, length), color)
-    #在之前新纯色图片上粘贴图片 
+    # 在之前新纯色图片上粘贴图片
     if width > height:
-        new_image.paste(image, (0, int((length - height)/2)))
+        new_image.paste(image, (0, int((length - height) / 2)))
     else:
-        new_image.paste(image, (int((length - width)/2), 0))
+        new_image.paste(image, (int((length - width) / 2), 0))
     return new_image
+
 
 def cut_image(image):
     width, height = image.size
@@ -22,16 +24,15 @@ def cut_image(image):
     boxs = []
     for y in xrange(3):
         for x in xrange(3):
-            box = (x * img_length, y * img_length, (x+1) * img_length, (y+1) * img_length)
+            box = (x * img_length, y * img_length, (x + 1) * img_length, (y + 1) * img_length)
             boxs.append(box)
-    image_list = [image.crop(box) for box in boxs]
-    return image_list
+    images = [image.crop(box) for box in boxs]
+    return images
 
-def save_image(image_list):
-    index = 1
-    for image in image_list:
-        image.save(str(index) + '.png', 'PNG')
-        index +=1
+
+def save_image(images):
+    for index, item in images:
+        item.save(str(index) + '.png', 'PNG')
 
 
 if __name__ == '__main__':
